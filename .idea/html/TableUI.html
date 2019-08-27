@@ -10,30 +10,53 @@
     <script type="text/javascript" src="../static/layui.js"></script>
 </head>
 <body>
+<div>
+    <input type="button" value="cookie" onclick="onLoginClick_nk()" />
+</div>
 <table class="layui-hide" id="test"></table>
 <script>
+    function onLoginClick_nk(e) {
+        setCookie('accessToken','accessToken');
+        setCookie('useId','useId');
+        setCookie('useType','useType');
+        setCookie('clientType','clientType');
+    }
     layui.use('table', function () {
+
         var table = layui.table;
 
         table.render({
             elem: '#test'
-            ,type:'POST'
+            ,method:'post'
             ,dataType:'josn'
-            , url: 'http://localhost:2510/user/getUserList?pageSize=10&pageNo=1&id=100'
-                // ,xhrFields: {
-                //     withCredentials: true
-                // }
-            ,xhrFields: true
-                ,crossDomain: true
+            , url: "http://www.lh.com:2000/api-a-bkf-/authority/user/getUserList?id=100&pageNo=1&pageSize=5"                // ,xhrFields: {
             , cols: [[
                 {field: 'id', width: 80, title: 'ID', sort: true}
-                , {field: 'username', width: 80, title: '用户名'}
+                , {field: 'userName', width: 80, title: '用户名'}
                 , {field: 'sex', width: 80, title: '性别', sort: true}
                 , {field: 'age', width: 80, title: '年龄'}
             ]]
             , page: true
         });
     });
+
+    function setCookie(c_name, value) {
+        console.log(c_name);
+        setCookieAndTimeOut(c_name, value,10);
+    }
+    function setCookieAndTimeOut(c_name, value,timeHours) {
+        var str = c_name + "=" + value;
+        if (timeHours > 0){
+            var ms = timeHours;
+            var date = new Date();
+            date.setTime(date.getTime() + ms);
+            str += ";expires=" + date.toGMTString();
+            str += ";Path=/;domain=localhost:63342"
+        }
+        document.cookie = str;
+        console.log(str);
+    }
+
 </script>
 </body>
 </html>
