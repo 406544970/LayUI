@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link type="text/css" rel="stylesheet" href="../static/css/layui.css" rel="external nofollow"/>
+    <title>动态表格</title>
+    <script type="text/javascript" src="../static/layui.js"></script>
+</head>
+<body>
+<table class="layui-hide" id="test"></table>
+<script>
+    layui.use('table', function () {
+        var table = layui.table;
+
+        table.render({
+            elem: '#test'
+            ,type:'POST'
+            ,dataType:'josn'
+            , url: 'http://localhost:2510/user/getUserList?pageSize=10&pageNo=1&id=100'
+                // ,xhrFields: {
+                //     withCredentials: true
+                // }
+            ,xhrFields: true
+                ,crossDomain: true
+            , cols: [[
+                {field: 'id', width: 80, title: 'ID', sort: true}
+                , {field: 'username', width: 80, title: '用户名'}
+                , {field: 'sex', width: 80, title: '性别', sort: true}
+                , {field: 'age', width: 80, title: '年龄'}
+            ]]
+            , page: true
+        });
+    });
+</script>
+</body>
+</html>

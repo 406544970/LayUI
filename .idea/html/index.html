@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="测试跨域与读写Cookie" />
+    <script src="http://www.qidianren.com/scripts/boot.js" type="text/javascript"></script>
+    <title>myCookie</title>
+</head>
+
+<body>
+    <div>
+        <input type="button" value="登录" onclick="onLoginClick_nk()" />
+        <input type="button" value="得到权限CS" onclick="onLoginClick_ck()" />
+        <input type="button" value="得到权限BS" onclick="onLoginClick_bk()" />
+    </div>
+    <div>
+        <LABEL id="lable1">content</LABEL>
+    </div>
+    <div>
+        <LABEL id="lable2">content</LABEL>
+    </div>
+    <div>
+        <LABEL id="lable3">content</LABEL>
+    </div>
+    <div>
+        <LABEL id="lable4">content</LABEL>
+    </div>
+    <div>
+        <LABEL id="lable5">content</LABEL>
+    </div>
+    <div>
+        <LABEL id="lable6">content</LABEL>
+    </div>
+    <div>
+        <LABEL id="lable7">content</LABEL>
+    </div>
+    <div>
+        <LABEL id="lable8"></LABEL>
+    </div>
+
+
+    <script type="text/javascript">
+
+        function onLoginClick_nk(e) {
+
+            $.ajax({
+                url: "http://localhost:2000/api-a-nkf-/dictionary/useLogOfManagerInBS?num=1234654654&passWord=123456",
+                type:"POST",
+                cache: false,
+                dataType:"json",
+                xhrFields: {
+                withCredentials: true
+                },
+                crossDomain: true,
+                success: function (text,status,XMLHttpRequest) {
+                    var obj = text;
+                    document.getElementById("lable1").innerHTML=obj["code"];
+                    document.getElementById("lable2").innerHTML=obj["message"];
+                    if (obj["code"] == '0'){
+                        document.getElementById("lable3").innerHTML='useId:' + obj["data"].useId;
+                        document.getElementById("lable4").innerHTML='useType:' + obj["data"].useType;
+                        document.getElementById("lable5").innerHTML='accessToken:' + obj["data"].accessToken;
+                        document.getElementById("lable6").innerHTML='timeOut:' + obj["data"].timeOut;
+                        document.getElementById("lable7").innerHTML='clientType:' + obj["data"].clientType;
+                        setCookieAndTimeOut("useId",obj["data"].useId);
+                        setCookieAndTimeOut("useType",obj["data"].useType);
+                        setCookieAndTimeOut("clientType",obj["data"].clientType);
+                        setCookieAndTimeOut("accessToken",obj["data"].accessToken);
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.info("errorStatus:" + XMLHttpRequest.status);
+                }
+            });
+        }
+        function onLoginClick_ck(e) {
+            $.ajax({
+                url: "http://www.lh.com:2000/api-a-nkf-/dictionary/selectMySystemNameList?id=0464bf14b8ee4c3f9d88eaf926c5966c",
+                type:"POST",
+                dataType:"json",
+                cache: false,
+                xhrFields: {
+                withCredentials: true
+                },
+                crossDomain: true,
+                success: function (text) {
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                }
+            });
+        }
+        function onLoginClick_bk(e) {
+            $.ajax({
+                url: "http://www.lh.com:2000/api-a-bkf-/dictionary/selectMySystemNameList?id=0464bf14b8ee4c3f9d88eaf926c5966c",
+                type:"POST",
+                dataType:"json",
+                cache: false,
+                xhrFields: {
+                withCredentials: true
+                },
+                crossDomain: true,
+                success: function (text) {
+                    var obj = text;
+                    document.getElementById("lable1").innerHTML=obj["code"];
+                    document.getElementById("lable2").innerHTML=obj["message"];
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.info("errorStatus:" + XMLHttpRequest.status);
+                    console.info("responseText:" + XMLHttpRequest.responseText);
+                    console.info("readyState:" + XMLHttpRequest.readyState);
+                    document.getElementById("lable8").innerHTML=XMLHttpRequest.responseText;
+                }
+            });
+        }
+        function setCookie(c_name, value) {
+            setCookieAndTimeOut(0);
+        }
+        function setCookieAndTimeOut(c_name, value,timeHours) {
+            var str = c_name + "=" + escape(value);
+            if (timeHours > 0){
+                var ms = timeHours;
+                console.log(ms);
+                var date = new Date();
+                date.setTime(date.getTime() + ms);
+                str += ";expires=" + date.toGMTString();
+            }
+            document.cookie = str;
+        }
+
+    </script>
+
+
+</body>
+
+</html>
