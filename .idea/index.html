@@ -123,16 +123,13 @@
     function setCookie(c_name, value) {
         setCookieAndTimeOut(c_name, value,10);
     }
-    function setCookieAndTimeOut(c_name, value,timeHours) {
-        var str = c_name + "=" + value;
-        console.log(str);
-        if (timeHours > 0){
-            var ms = timeHours;
-            console.log(ms);
+    function setCookieAndTimeOut(c_name, value,days) {
+        var str = c_name + "=" + escape(value);
+        if (days > 0) {
             var date = new Date();
-            date.setTime(date.getTime() + ms);
-            // str += ";expires=" + date.toGMTString();
+            date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
             str += ";Path=/;domain=.lh.com"
+            str += ";expires=" + date.toGMTString();
         }
         document.cookie = str;
     }
